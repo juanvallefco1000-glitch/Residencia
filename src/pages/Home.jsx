@@ -9,9 +9,8 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import brandImage from '../assets/segurixt-logo-oficial.jpeg'
-import { getServiceCategories } from '../services/serviceCatalogService'
 import { getFeaturedProducts } from '../services/catalogService'
-import ServiceCard from '../components/ServiceCard'
+import ServicesSection from '../components/ServicesSection'
 import ProductCard from '../components/ProductCard'
 
 const benefitIcons = { experience: BadgeCheck, warranty: ShieldCheck, attention: Clock3, pricing: Handshake }
@@ -31,9 +30,9 @@ export default function Home() {
             <Link className="button primary" to="/cotizacion">
               <MessageCircle size={19} /> Solicitar cotización
             </Link>
-            <Link className="button secondary" to="/servicios">
+            <a className="button secondary" href="#servicios">
               Conocer servicios <ArrowRight size={19} />
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -73,22 +72,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="section softSection">
-        <div className="sectionHeading">
-          <span className="sectionKicker">Servicios</span>
-          <h2>Cuatro áreas, una sola solución integral</h2>
-          <p>
-            Los servicios se organizan en cuatro categorías para facilitar la consulta
-            y permitir al cliente llegar directamente al área que necesita.
-          </p>
-        </div>
-
-        <div className="serviceGrid fourColumns">
-          {getServiceCategories().map((service) => (
-            <ServiceCard key={service.slug} service={service} />
-          ))}
-        </div>
-      </section>
+      <ServicesSection />
 
       <section className="section">
         <div className="sectionHeading headingRow">

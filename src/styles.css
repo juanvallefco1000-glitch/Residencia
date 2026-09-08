@@ -586,7 +586,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .footer {
   display: grid;
-  grid-template-columns: 1.4fr .7fr .7fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 30px;
   padding: 45px 5.5vw;
   border-top: 1px solid var(--soft-line);
@@ -612,7 +612,23 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
   font-size: .84rem;
 }
-.footerMeta strong { color: var(--text); }
+.footer > * { min-width: 0; }
+.footer { scroll-margin-top: 90px; }
+.footer h2 { margin: 0 0 16px; font-size: 1rem; color: var(--gold-light); }
+.footer h3 { margin: 18px 0 10px; font-size: .95rem; }
+.footerCompanyName { display: block; margin-top: 16px; }
+.footerContactList { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.footerContactList li { display: flex; align-items: flex-start; gap: 10px; }
+.footerContactList svg { flex: 0 0 18px; margin-top: 3px; color: var(--gold); }
+.footerContactList strong { display: block; color: var(--text); margin-bottom: 4px; }
+.footerContactList, .footerSocial { color: var(--muted); font-size: .88rem; line-height: 1.6; }
+.footer a, .footerContactList span { overflow-wrap: anywhere; }
+.footer a { transition: color .2s ease; }
+.footer a:hover { color: var(--gold-light); }
+.footerSocial { display: flex; flex-wrap: wrap; gap: 14px; }
+.footerQuote { margin-top: 20px; }
+.footerMeta { grid-column: 1 / -1; padding-top: 22px; border-top: 1px solid var(--soft-line); }
+
 
 .whatsappFloat {
   position: fixed;
@@ -630,6 +646,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 1100px) {
+  .footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fourColumns,
   .productGrid,
   .benefitGrid { grid-template-columns: repeat(2, 1fr); }
@@ -693,13 +710,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
     padding: 30px 22px;
   }
   .headingRow { align-items: flex-start; flex-direction: column; }
-  .footer {
-    grid-template-columns: 1fr;
-    padding: 36px 20px;
-  }
+  .footer { padding: 36px 20px; }
 }
 
 @media (max-width: 560px) {
+  .footer { grid-template-columns: minmax(0, 1fr); }
   .fourColumns,
   .productGrid,
   .benefitGrid,

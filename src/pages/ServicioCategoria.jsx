@@ -1,3 +1,4 @@
+import './ServicioCategoria.css'
 import ServiceIcon from '../components/ServiceIcon'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, MessageCircle } from 'lucide-react'
@@ -20,20 +21,27 @@ export default function ServicioCategoria() {
   return (
     <main>
       <section className="pageHero categoryHero">
-        <div className="serviceIcon largeIcon"><ServiceIcon slug={service.slug} size={36} /></div>
+        <div className="serviceIcon largeIcon"><ServiceIcon slug={service.slug} icon={service.icon} size={36} /></div>
         <span className="sectionKicker">Servicios</span>
         <h1>{service.title}</h1>
-        <p>{service.description}</p>
+        {service.description && <p>{service.description}</p>}
       </section>
 
       <section className="section detailLayout">
         <div>
           <h2>Servicios disponibles</h2>
-          <div className="featureList">
-            {service.services.map((item) => (
-              <div key={item}>
-                <CheckCircle2 size={20} />
-                <span>{item}</span>
+          <div className="serviceDetailGroups">
+            {(service.serviceGroups ?? [{ id: service.slug, services: service.services }]).map((group) => (
+              <div className="serviceDetailGroup" key={group.id}>
+                {group.title && <h3>{group.title}</h3>}
+                <ul className="serviceDetailList">
+                  {group.services.map((item) => (
+                    <li key={item}>
+                      <CheckCircle2 size={20} aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>

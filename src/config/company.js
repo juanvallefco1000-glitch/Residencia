@@ -14,6 +14,9 @@ export const company = {
   email: null,
   emailPending: 'Se configurará el correo comercial definitivo en el panel administrativo.',
   location,
+  mapUrl: null,
+  schedule: null,
+  social: [], // Enlaces disponibles: { name, url }.
   serviceArea: `Atención en ${location} y zonas cercanas.`,
   institutional: {
     introduction: `En ${name} integramos tecnología, experiencia y atención personalizada para resolver necesidades de seguridad, conectividad, energía y automatización.`,

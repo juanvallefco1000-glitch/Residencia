@@ -3,11 +3,9 @@ import { NavLink, Link, useLocation } from 'react-router-dom'
 import { ChevronDown, Menu, X } from 'lucide-react'
 import logoSegurIXT from '../assets/segurixt-logo-oficial.jpeg'
 import { company } from '../config/company'
-import { getServiceCategories } from '../services/serviceCatalogService'
 import { getCatalogCategories } from '../services/catalogService'
-import ServiceIcon from './ServiceIcon'
 
-function CategoryDropdown({ id, title, to, categories, serviceIcons, open, onOpen, onClose, onNavigate }) {
+function CategoryDropdown({ id, title, to, categories, open, onOpen, onClose, onNavigate }) {
   const toggleRef = useRef(null)
 
   return (
@@ -45,12 +43,10 @@ function CategoryDropdown({ id, title, to, categories, serviceIcons, open, onOpe
           <ChevronDown size={16} aria-hidden="true" />
         </button>
       </div>
-      <div id={id} className={`dropdownPanel${serviceIcons ? '' : ' catalogDropdown'}`} hidden={!open}>
+      <div id={id} className="dropdownPanel catalogDropdown" hidden={!open}>
         {categories.map(({ slug, title: categoryTitle, description }) => (
           <Link key={slug} className="dropdownItem" to={`${to}/${slug}`} onClick={onNavigate}>
-            {serviceIcons
-              ? <span className="dropdownIcon"><ServiceIcon slug={slug} size={20} /></span>
-              : <span className="dropdownDot" aria-hidden="true" />}
+            <span className="dropdownDot" aria-hidden="true" />
             <span>
               <strong>{categoryTitle}</strong>
               <small>{description}</small>
@@ -58,7 +54,7 @@ function CategoryDropdown({ id, title, to, categories, serviceIcons, open, onOpe
           </Link>
         ))}
         <Link className="dropdownFooter" to={to} onClick={onNavigate}>
-          {serviceIcons ? 'Ver todos los servicios' : 'Ver catálogo completo'}
+          Ver catálogo completo
         </Link>
       </div>
     </div>
@@ -141,17 +137,6 @@ export default function Navbar() {
         <NavLink to="/" onClick={closeMenus}>Inicio</NavLink>
         <NavLink to="/empresa" onClick={closeMenus}>Empresa</NavLink>
         <CategoryDropdown
-          id="services-navigation"
-          title="Servicios"
-          to="/servicios"
-          categories={getServiceCategories()}
-          serviceIcons
-          open={openDropdown === 'services'}
-          onOpen={() => setOpenDropdown('services')}
-          onClose={() => setOpenDropdown((current) => current === 'services' ? null : current)}
-          onNavigate={closeMenus}
-        />
-        <CategoryDropdown
           id="catalog-navigation"
           title="Catálogo"
           to="/catalogo"
@@ -162,7 +147,6 @@ export default function Navbar() {
           onNavigate={closeMenus}
         />
         <NavLink to="/promociones" onClick={closeMenus}>Promociones</NavLink>
-        <NavLink to="/contacto" onClick={closeMenus}>Contacto</NavLink>
         <Link className="navCta" to="/cotizacion" onClick={closeMenus}>Cotizar</Link>
       </nav>
     </header>
