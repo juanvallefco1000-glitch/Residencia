@@ -9,6 +9,7 @@ function escapeHtml(value) {
 }
 
 export default defineConfig({
+  base: '/Residencia/',
   plugins: [
     react(),
     {
