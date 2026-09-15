@@ -6,10 +6,8 @@ import {
   BadgeCheck,
   Clock3,
   Handshake,
-  MessageCircle,
   ShieldCheck,
 } from 'lucide-react'
-import brandImage from '../assets/segurixt-logo-oficial.jpeg'
 import { getFeaturedProducts } from '../services/catalogService'
 import ServicesSection from '../components/ServicesSection'
 import ProductCard from '../components/ProductCard'
@@ -27,28 +25,7 @@ export default function Home() {
 
   return (
     <main>
-      <section className="hero">
-        <div className="heroContent">
-          <span className="eyebrow">
-            <ShieldCheck size={18} /> Seguridad • Tecnología • Confianza
-          </span>
-          <h1>Más que servicios, <span>soluciones inteligentes.</span></h1>
-          <p>{company.institutional.introduction}</p>
-
-          <div className="heroActions">
-            <Link className="button primary" to="/cotizacion">
-              <MessageCircle size={19} /> Solicitar cotización
-            </Link>
-            <Link className="button secondary" to="/#servicios">
-              Conocer servicios <ArrowRight size={19} />
-            </Link>
-          </div>
-        </div>
-
-        <div className="heroVisual">
-          <img src={brandImage} alt={`Identidad visual de ${company.name}`} />
-        </div>
-      </section>
+      <ServicesSection />
 
       <section className="institutional section">
         <div className="sectionHeading">
@@ -80,8 +57,6 @@ export default function Home() {
           Ver información de la empresa <ArrowRight size={16} />
         </Link>
       </section>
-
-      <ServicesSection />
 
       <section className="section">
         <div className="sectionHeading headingRow">
