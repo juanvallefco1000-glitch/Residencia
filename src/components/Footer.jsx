@@ -84,7 +84,7 @@ export default function Footer() {
           <Link to="/catalogo">Catálogo</Link>
           <Link to="/promociones">Promociones</Link>
           <Link to="/cotizacion">Cotización</Link>
-          <a href="#contacto">Contacto</a>
+          <Link to={{ pathname: location.pathname, search: location.search, hash: '#contacto' }}>Contacto</Link>
         </nav>
       </div>
 

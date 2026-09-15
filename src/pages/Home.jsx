@@ -1,5 +1,6 @@
 import { company } from '../config/company'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import {
   ArrowRight,
   BadgeCheck,
@@ -16,6 +17,14 @@ import ProductCard from '../components/ProductCard'
 const benefitIcons = { experience: BadgeCheck, warranty: ShieldCheck, attention: Clock3, pricing: Handshake }
 
 export default function Home() {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.hash === '#servicios') {
+      document.getElementById('servicios')?.scrollIntoView({ block: 'start' })
+    }
+  }, [location])
+
   return (
     <main>
       <section className="hero">
@@ -30,9 +39,9 @@ export default function Home() {
             <Link className="button primary" to="/cotizacion">
               <MessageCircle size={19} /> Solicitar cotización
             </Link>
-            <a className="button secondary" href="#servicios">
+            <Link className="button secondary" to="/#servicios">
               Conocer servicios <ArrowRight size={19} />
-            </a>
+            </Link>
           </div>
         </div>
 
