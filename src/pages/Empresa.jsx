@@ -4,12 +4,6 @@ import { Target, Eye, Building2, CheckCircle2 } from 'lucide-react'
 export default function Empresa() {
   return (
     <main>
-      <section className="pageHero">
-        <span className="sectionKicker">Empresa</span>
-        <h1>Conoce {company.name}</h1>
-        <p>{company.institutional.summary}</p>
-      </section>
-
       <section className="section twoColumn">
         <article className="contentCard">
           <Building2 size={31} />
