@@ -1,6 +1,7 @@
 import ServiceIcon from './ServiceIcon'
+import ServiceDetails from './ServiceDetails'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 export default function ServiceCard({ service, detailed = false, servicesLimit }) {
   if (detailed) {
@@ -10,14 +11,7 @@ export default function ServiceCard({ service, detailed = false, servicesLimit }
         <div className="serviceIcon serviceCardIcon">
           <ServiceIcon slug={service.slug} icon={service.icon} size={56} />
         </div>
-        <ul className="serviceCardList">
-          {(service.shortServices ?? service.services).slice(0, servicesLimit).map((item) => (
-            <li key={item}><Check size={15} aria-hidden="true" /><span>{item}</span></li>
-          ))}
-        </ul>
-        <Link className="serviceCardMore" to={`/servicios/${service.slug}`} aria-label={`Ver más sobre ${service.title}`}>
-          Ver más <ArrowRight size={18} aria-hidden="true" />
-        </Link>
+        <ServiceDetails service={service} servicesLimit={servicesLimit} />
       </article>
     )
   }

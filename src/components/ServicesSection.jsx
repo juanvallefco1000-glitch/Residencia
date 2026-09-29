@@ -1,8 +1,11 @@
 import ServiceCard from './ServiceCard'
+import MobileServicesSelector from './MobileServicesSelector'
 import { getServicesPageCategories } from '../services/serviceCatalogService'
 import './ServicesSection.css'
 
 export default function ServicesSection() {
+  const services = getServicesPageCategories()
+
   return (
     <section id="servicios" className="section softSection" aria-labelledby="services-heading">
       <div className="sectionHeading">
@@ -10,10 +13,16 @@ export default function ServicesSection() {
         <h2 id="services-heading">Soluciones tecnológicas para tu seguridad y conectividad</h2>
       </div>
       <div className="serviceGrid servicesSectionGrid">
-        {getServicesPageCategories().map((service) => (
-          <ServiceCard key={service.slug} service={service} detailed servicesLimit={5} />
+        {services.map((service) => (
+          <ServiceCard
+            key={service.slug}
+            service={service}
+            detailed
+            servicesLimit={5}
+          />
         ))}
       </div>
+      <MobileServicesSelector services={services} />
     </section>
   )
 }

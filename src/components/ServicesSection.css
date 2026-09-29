@@ -33,7 +33,8 @@
   border-radius: 20px;
 }
 
-.serviceCardDetailed .serviceCardList {
+.serviceCardDetailed .serviceCardList,
+.mobileServicesPanel .serviceCardList {
   display: grid;
   align-content: start;
   gap: 13px;
@@ -59,7 +60,8 @@
   color: var(--gold-light);
 }
 
-.serviceCardDetailed .serviceCardMore {
+.serviceCardDetailed .serviceCardMore,
+.mobileServicesPanel .serviceCardMore {
   margin-top: auto;
   min-height: 44px;
   padding-top: 14px;
@@ -73,14 +75,79 @@
   border-radius: 4px;
 }
 
+.mobileServices { display: none; }
+
 @media (max-width: 1200px) {
   .servicesSectionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 560px) {
-  .servicesSectionGrid { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
-  .serviceCardDetailed .serviceCardTitle { min-height: 0; }
-  .serviceCardDetailed .serviceCardIcon { width: 90px; height: 90px; }
+@media (max-width: 767px) {
+  #servicios { padding: 32px 12px; }
+  #servicios .sectionHeading { margin-bottom: 18px; }
+  #servicios .sectionKicker { font-size: .7rem; letter-spacing: .12em; }
+  #servicios .sectionHeading h2 {
+    margin: 8px 0 0;
+    font-size: clamp(1.25rem, 4.8vw, 1.65rem);
+    line-height: 1.2;
+    letter-spacing: -.025em;
+  }
+  #servicios .servicesSectionGrid { display: none; }
+  .mobileServices { display: block; }
+  .mobileServicesOptions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .mobileServiceOption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    min-height: 80px;
+    padding: 10px 2px;
+    border: 1px solid var(--soft-line);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--muted);
+    font: inherit;
+    font-size: clamp(.55rem, 2.5vw, .75rem);
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  .mobileServiceOption svg { flex-shrink: 0; color: var(--gold-light); }
+  .mobileServiceOption span { max-width: 100%; overflow-wrap: anywhere; }
+  .mobileServiceOption[aria-expanded="true"] {
+    color: var(--gold-light);
+    border-color: var(--gold-light);
+    background: rgba(216,157,68,.12);
+    box-shadow: inset 0 -3px var(--gold-light);
+  }
+  .mobileServiceOption:focus-visible {
+    outline: 2px solid var(--gold-light);
+    outline-offset: 2px;
+  }
+  .mobileServicesPanel:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    padding: 18px;
+    border: 1px solid var(--soft-line);
+    border-radius: 17px;
+    background: var(--panel);
+  }
+  .mobileServicesPanel h3 { margin: 0 0 16px; font-size: 1rem; color: var(--gold-light); }
+  .mobileServicesPanel .serviceCardList { gap: 9px; margin-bottom: 18px; }
+  .mobileServicesPanel .serviceCardMore {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--gold-light);
+    font-size: .88rem;
+    font-weight: 800;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

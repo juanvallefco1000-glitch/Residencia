@@ -1,0 +1,125 @@
+/* Todos los selectores quedan limitados al panel; no alteran el sitio público. */
+.adminRoot { min-height: 100vh; color: var(--text); background: #0c1117; font-family: inherit; }
+.adminRoot :where(button, input, select, textarea) { font: inherit; }
+.adminRoot :where(button, a, input, select, textarea):focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+.adminRoot :where(h1, h2, h3, p) { margin-top: 0; }
+.adminRoot h1 { font-size: clamp(1.6rem, 3vw, 2.15rem); letter-spacing: -.025em; margin-bottom: 9px; }
+.adminRoot h2 { font-size: 1.15rem; margin-bottom: 8px; }
+.adminRoot h3 { font-size: .94rem; }
+.adminRoot p { line-height: 1.65; }
+.adminRoot button { cursor: pointer; }
+.adminRoot button:disabled { cursor: wait; opacity: .65; }
+.adminRoot .adminSidebar { position: fixed; inset: 0 auto 0 0; width: 248px; background: #10161e; border-right: 1px solid var(--soft-line); display: flex; flex-direction: column; padding: 26px 18px 20px; z-index: 210; overflow-y: auto; }
+.adminRoot .adminBrand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.adminRoot .adminBrand img { width: 172px; max-width: 100%; height: 78px; object-fit: contain; border-radius: 8px; }
+.adminRoot .adminSidebarLabel { padding: 0 14px; margin-bottom: 14px; color: #84919f; font-size: .67rem; font-weight: 700; letter-spacing: .16em; }
+.adminRoot .adminSidebar nav { display: grid; gap: 5px; }
+.adminRoot .adminSidebar a { display: flex; gap: 12px; align-items: center; padding: 13px 14px; border-radius: 9px; color: #b8c1cb; font-size: .92rem; }
+.adminRoot .adminSidebar a:hover { background: #1b2430; color: white; }
+.adminRoot .adminSidebar a.active { color: var(--gold-light); background: rgba(216,157,68,.12); box-shadow: inset 3px 0 var(--gold); }
+.adminRoot .adminSidebarBottom { margin-top: auto; padding-top: 28px; }
+.adminRoot .adminSidebarBottom small { display: block; color: #8996a4; padding: 14px; font-size: .72rem; }
+.adminRoot .adminWorkspace { margin-left: 248px; min-width: 0; }
+.adminRoot .adminHeader { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 88px; padding: 20px 36px; border-bottom: 1px solid var(--soft-line); background: #10161e; }
+.adminRoot .adminHeader > div { display: flex; align-items: center; gap: 12px; }
+.adminRoot .adminIdentity { display: flex; align-items: center; gap: 12px; font-size: .86rem; }
+.adminRoot .adminIdentity > svg { color: var(--gold-light); }
+.adminRoot .adminIdentity small { display: block; margin-top: 4px; font-size: .7rem; color: var(--muted); }
+.adminRoot .adminContent { padding: 28px 36px 60px; max-width: 1600px; margin: auto; }
+.adminRoot .adminDemoNotice { color: #c7b492; font-size: .76rem; padding-bottom: 18px; border-bottom: 1px solid var(--soft-line); margin-bottom: 28px; }
+.adminRoot .adminPageHeading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 26px; }
+.adminRoot .adminPageHeading p { margin-bottom: 0; color: var(--muted); font-size: .92rem; }
+.adminRoot .adminButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 10px 16px; border: 1px solid #3a414a; border-radius: 8px; color: var(--text); background: #1a232e; font-size: .85rem; font-weight: 600; text-align: center; }
+.adminRoot .adminButton:hover { border-color: var(--gold); background: #242d38; }
+.adminRoot .adminPrimary { background: var(--gold); color: #11171c; border-color: var(--gold); }
+.adminRoot .adminPrimary:hover { background: var(--gold-light); }
+.adminRoot .adminButtonSmall { padding: 8px 12px; min-height: 38px; font-size: .78rem; }
+.adminRoot .adminIconButton { display: inline-flex; justify-content: center; align-items: center; min-width: 44px; min-height: 44px; background: transparent; color: var(--text); border: 1px solid var(--soft-line); border-radius: 8px; }
+.adminRoot .adminMobileOnly { display: none; }
+.adminRoot .adminStats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 32px; }
+.adminRoot .adminStatCard { display: flex; gap: 16px; padding: 24px 20px; background: #131c26; border: 1px solid var(--soft-line); border-radius: 12px; font-size: .85rem; color: #bdc6d0; }
+.adminRoot .adminStatCard:hover { border-color: var(--gold); }
+.adminRoot .adminStatCard strong { display: block; font-size: 2.2rem; color: var(--text); margin: 9px 0; }
+.adminRoot .adminStatCard small { color: var(--gold-light); font-size: .73rem; }
+.adminRoot .adminStatIcon { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; background: rgba(216,157,68,.1); color: var(--gold-light); }
+.adminRoot .adminPanel { background: #131b25; border: 1px solid var(--soft-line); border-radius: 12px; padding: 24px; min-width: 0; }
+.adminRoot .adminPanelHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.adminRoot .adminPanelHeading p { margin: 0; font-size: .85rem; color: var(--muted); }
+.adminRoot .adminPanelHeading > svg { color: var(--gold-light); flex-shrink: 0; }
+.adminRoot .adminTableWrap { overflow-x: auto; max-width: 100%; border: 1px solid var(--soft-line); border-radius: 10px; background: #131b25; }
+.adminRoot table { width: 100%; border-collapse: collapse; text-align: left; font-size: .84rem; }
+.adminRoot th { padding: 15px 18px; background: #1a2430; color: #c2ccd7; font-weight: 600; white-space: nowrap; }
+.adminRoot td { padding: 16px 18px; border-top: 1px solid var(--soft-line); line-height: 1.5; min-width: 110px; }
+.adminRoot tbody tr:hover { background: #17212c; }
+.adminRoot .adminBadge { display: inline-block; padding: 4px 9px; border-radius: 6px; white-space: nowrap; font-size: .73rem; font-weight: 600; }
+.adminRoot .adminBadge-gold { color: #f0c777; background: #3a3020; }
+.adminRoot .adminBadge-blue { color: #a6cdfa; background: #20364c; }
+.adminRoot .adminBadge-green { color: #96dfb8; background: #1d3a30; }
+.adminRoot .adminBadge-red { color: #f5aaaa; background: #41282f; }
+.adminRoot .adminBadge-muted { color: #bbc4cf; background: #29323d; }
+.adminRoot .adminActions { display: flex; flex-wrap: wrap; gap: 8px; }
+.adminRoot .adminThumbnail { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 8px; object-fit: cover; background: #222e3c; color: #8c9dad; }
+.adminRoot .adminFilters { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; border: 1px solid var(--soft-line); border-radius: 10px; margin-bottom: 20px; background: #131b25; }
+.adminRoot label { display: grid; gap: 9px; font-size: .86rem; color: #cad2dc; }
+.adminRoot .adminFilters label { flex: 1 1 220px; }
+.adminRoot :where(input, select, textarea) { width: 100%; min-width: 0; padding: 12px 14px; border: 1px solid #3a4655; border-radius: 8px; background: #0e151e; color: var(--text); min-height: 44px; }
+.adminRoot textarea { resize: vertical; }
+.adminRoot input[aria-invalid="true"] { border-color: #e38d8d; }
+.adminRoot .adminServiceGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.adminRoot .adminServiceGrid h2 { font-size: 1rem; line-height: 1.5; margin: 0; }
+.adminRoot .adminServiceGroups { display: grid; gap: 14px; padding-bottom: 24px; }
+.adminRoot .adminServiceGroups h3 { color: #e9c58d; margin-bottom: 8px; }
+.adminRoot .adminServiceGroups ul { padding-left: 20px; margin: 0; color: #b7c1cd; font-size: .88rem; line-height: 1.9; }
+.adminRoot .adminFormGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.adminRoot .adminFullWidth { grid-column: 1 / -1; }
+.adminRoot .adminCompanyForm > p { margin-top: 24px; }
+.adminRoot .adminMuted { color: var(--muted); font-size: .86rem; }
+.adminRoot .adminNotice { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #242219; color: #ead4ac; font-size: .88rem; }
+.adminRoot .adminError { color: #ffb0b0; font-size: .82rem; margin: 8px 0; }
+.adminRoot .adminEmpty { text-align: center; padding: 40px; color: var(--muted); }
+.adminRoot .adminDialog { max-width: min(540px, calc(100vw - 32px)); width: 100%; padding: 28px; border: 1px solid var(--line); border-radius: 14px; background: #141e29; color: var(--text); overflow-wrap: anywhere; }
+.adminRoot .adminDialog::backdrop { background: rgba(0,0,0,.72); }
+.adminRoot .adminDialogHeading { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.adminRoot .adminDialogHeading h2 { line-height: 1.5; }
+.adminRoot .adminSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.adminRoot.adminLogin { display: grid; place-items: center; padding: 40px 20px; }
+.adminRoot .adminLoginCard { width: 100%; max-width: 460px; padding: 36px; border: 1px solid var(--line); border-radius: 18px; background: #131b25; box-shadow: 0 24px 70px #0005; }
+.adminRoot .adminLoginLogo { display: block; width: 180px; height: 90px; object-fit: contain; margin: 0 auto 24px; }
+.adminRoot .adminLoginIcon { display: grid; place-items: center; margin-bottom: 16px; color: var(--gold-light); }
+.adminRoot .adminLoginCard h1 { text-align: center; font-size: 1.65rem; }
+.adminRoot .adminLoginCard > p { text-align: center; }
+.adminRoot .adminLoginCard form { margin: 25px 0; }
+.adminRoot .adminLoginCard form > label { margin: 18px 0 9px; }
+.adminRoot .adminPassword { position: relative; }
+.adminRoot .adminPassword input { padding-right: 56px; }
+.adminRoot .adminPassword button { position: absolute; right: 2px; top: 2px; border: 0; }
+.adminRoot .adminLoginCard .adminButton { width: 100%; }
+.adminRoot .adminLoginCard form > button { margin-top: 24px; }
+.adminRoot .adminBackLink { display: block; text-align: center; margin-top: 20px; color: var(--gold-light); font-size: .85rem; }
+@media (max-width: 1200px) {
+  .adminRoot .adminSidebar { width: 205px; padding-left: 12px; padding-right: 12px; }
+  .adminRoot .adminWorkspace { margin-left: 205px; }
+  .adminRoot .adminContent { padding: 24px; }
+  .adminRoot .adminHeader { padding: 20px 24px; }
+  .adminRoot .adminStats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .adminRoot .adminSidebar { width: 270px; max-width: 85vw; transform: translateX(-100%); visibility: hidden; }
+  .adminRoot .adminSidebar.isOpen { transform: translateX(0); visibility: visible; }
+  .adminRoot .adminMobileOnly { display: inline-flex; }
+  .adminRoot .adminWorkspace { margin-left: 0; }
+  .adminRoot .adminHeader { min-height: 76px; padding: 14px 16px; gap: 10px; }
+  .adminRoot .adminHeader strong { font-size: .86rem; }
+  .adminRoot .adminIdentity > span { display: none; }
+  .adminRoot .adminContent { padding: 20px 16px 40px; }
+  .adminRoot .adminOverlay { position: fixed; inset: 0; background: #0009; border: 0; z-index: 200; }
+  .adminRoot .adminPageHeading { align-items: flex-start; flex-direction: column; }
+  .adminRoot .adminServiceGrid, .adminRoot .adminFormGrid { grid-template-columns: minmax(0, 1fr); }
+  .adminRoot .adminPanel { padding: 18px; }
+  .adminRoot .adminPanelHeading { flex-wrap: wrap; }
+  .adminRoot .adminStatCard { padding: 18px 14px; gap: 10px; }
+}
+@media (max-width: 420px) {
+  .adminRoot .adminStats { grid-template-columns: minmax(0, 1fr); }
+  .adminRoot .adminLoginCard { padding: 24px 20px; }
+}
