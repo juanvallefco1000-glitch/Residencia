@@ -3,10 +3,13 @@ import ServiceIcon from '../components/ServiceIcon'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, MessageCircle } from 'lucide-react'
 import { getServiceCategory } from '../services/serviceCatalogService'
+import usePublicServices from '../hooks/usePublicServices'
+import ServiceCatalogStatus from '../components/ServiceCatalogStatus'
 
 export default function ServicioCategoria() {
   const { slug } = useParams()
-  const service = getServiceCategory(slug)
+  const { categories, loading, error } = usePublicServices()
+  const service = categories.find((item) => item.slug === slug || item.aliases?.includes(slug)) ?? getServiceCategory(slug)
 
   if (!service) {
     return (
@@ -30,6 +33,7 @@ export default function ServicioCategoria() {
       <section className="section detailLayout">
         <div>
           <h2>Servicios disponibles</h2>
+          <ServiceCatalogStatus loading={loading} error={error} />
           <div className="serviceDetailGroups">
             {(service.serviceGroups ?? [{ id: service.slug, services: service.services }]).map((group) => (
               <div className="serviceDetailGroup" key={group.id}>

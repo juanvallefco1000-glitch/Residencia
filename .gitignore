@@ -22,3 +22,14 @@ yarn-error.log*
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Backend Spring Boot / Maven
+**/target/
+**/.mvn/wrapper/maven-wrapper.jar
+*.class
+
+# Credenciales y certificados
+*.pem
+*.key
+*.p12
+*.pfx
