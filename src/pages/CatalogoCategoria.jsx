@@ -1,17 +1,26 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { getCatalogCategory, getProductsByCategory } from '../services/catalogService'
-import ProductCard from '../components/ProductCard'
+import { useState } from 'react'
+import useProductCatalog from '../hooks/useProductCatalog'
+import ProductResults from '../components/ProductResults'
 
 export default function CatalogoCategoria() {
   const { slug } = useParams()
-  const category = getCatalogCategory(slug)
-  const categoryProducts = getProductsByCategory(slug)
+  return <CategoryCatalog key={slug} slug={slug} />
+}
+
+function CategoryCatalog({ slug }) {
+  const [filters, setFilters] = useState({ q: '', page: 0 })
+  const catalog = useProductCatalog({ ...filters, categoria: slug })
+  const category = catalog.categories.find(item => item.slug === slug)
+
+  if (catalog.loading && !category) return <main className="simplePage"><p role="status">Cargando categoría…</p></main>
 
   if (!category) {
     return (
       <main className="simplePage">
         <h1>Categoría no encontrada</h1>
+        {catalog.error && <p role="status">{catalog.error}</p>}
         <Link className="textLink" to="/catalogo"><ArrowLeft size={16} /> Volver al catálogo</Link>
       </main>
     )
@@ -26,18 +35,10 @@ export default function CatalogoCategoria() {
       </section>
 
       <section className="section">
-        {categoryProducts.length ? (
-          <div className="productGrid">
-            {categoryProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        ) : (
-          <div className="emptyState">
-            <h2>Sin productos cargados</h2>
-            <p>Los productos se agregarán desde el panel administrativo o la sincronización con proveedores.</p>
-          </div>
-        )}
+        <div className="catalogTools"><label>Buscar en {category.title}
+          <input type="search" value={filters.q} maxLength={200} onChange={event => setFilters({ q: event.target.value, page: 0 })} />
+        </label></div>
+        <ProductResults catalog={catalog} page={filters.page} onPageChange={page => setFilters(current => ({ ...current, page }))} />
       </section>
     </main>
   )

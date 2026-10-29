@@ -1,23 +1,27 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { getCatalogCategories, getProducts } from '../services/catalogService'
-import ProductCard from '../components/ProductCard'
+import { useState } from 'react'
+import useProductCatalog from '../hooks/useProductCatalog'
+import ProductResults from '../components/ProductResults'
 
 export default function Catalogo() {
+  const [filters, setFilters] = useState({ q: '', categoria: '', page: 0 })
+  const catalog = useProductCatalog(filters)
+  const change = (key, value) => setFilters(current => ({ ...current, [key]: value, page: 0 }))
   return (
     <main>
       <section className="pageHero">
         <span className="sectionKicker">Catálogo digital</span>
         <h1>Consulta productos por categoría</h1>
         <p>
-          La información actual es demostrativa. Esta interfaz está preparada para conectarse
-          posteriormente con Spring Boot, MySQL y APIs de proveedores autorizados.
+          Explora nuestras soluciones tecnológicas y solicita una cotización.
+          Confirma disponibilidad y características con nuestro equipo.
         </p>
       </section>
 
       <section className="section">
         <div className="catalogCategoryGrid">
-          {getCatalogCategories().map((category) => (
+          {catalog.categories.map((category) => (
             <Link className="catalogCategoryCard" key={category.slug} to={`/catalogo/${category.slug}`}>
               <span className="categoryIndex">CAT</span>
               <h2>{category.title}</h2>
@@ -31,13 +35,20 @@ export default function Catalogo() {
       <section className="section softSection">
         <div className="sectionHeading">
           <span className="sectionKicker">Vista general</span>
-          <h2>Productos demostrativos</h2>
+          <h2>Productos</h2>
         </div>
-        <div className="productGrid">
-          {getProducts().map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div className="catalogTools">
+          <label>Buscar productos
+            <input type="search" value={filters.q} maxLength={200} placeholder="Nombre, marca o modelo" onChange={event => change('q', event.target.value)} />
+          </label>
+          <label>Categoría
+            <select value={filters.categoria} onChange={event => change('categoria', event.target.value)}>
+              <option value="">Todas las categorías</option>
+              {catalog.categories.map(category => <option key={category.slug} value={category.slug}>{category.title}</option>)}
+            </select>
+          </label>
         </div>
+        <ProductResults catalog={catalog} page={filters.page} onPageChange={page => setFilters(current => ({ ...current, page }))} />
       </section>
     </main>
   )

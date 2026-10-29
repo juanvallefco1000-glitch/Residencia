@@ -35,7 +35,7 @@ export default function AdminLayout() {
     <AdminSidebar open={open} onClose={close} sidebarRef={sidebarRef} />
     {open && <button className="adminOverlay" aria-label="Cerrar menú administrativo" onClick={close} tabIndex={-1} />}
     <div className="adminWorkspace" inert={open ? true : undefined}><AdminHeader open={open} onToggle={() => setOpen(value => !value)} menuRef={menuRef} />
-      <main className="adminContent"><p className="adminDemoNotice">Entorno de demostración · Datos de prueba · Los cambios no se guardan</p><Outlet /></main>
+      <main className="adminContent"><p className="adminDemoNotice">{location.pathname.startsWith('/admin/usuarios') ? 'Sesión autenticada · Administración de cuentas, roles y acceso.' : location.pathname.startsWith('/admin/productos') ? 'Sesión autenticada · Los cambios de productos se reflejan en el catálogo público.' : 'Sesión autenticada · El contenido de este módulo sigue siendo de demostración.'}</p><Outlet /></main>
     </div>
   </div>
 }

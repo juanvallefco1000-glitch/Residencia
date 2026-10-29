@@ -1,0 +1,16 @@
+.catalogTools { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.catalogTools label { display: grid; gap: 8px; flex: 1 1 220px; min-width: 0; color: var(--muted); }
+.catalogTools input, .catalogTools select {
+  width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--soft-line);
+  background: var(--panel); color: var(--text); font: inherit;
+}
+.catalogTools input:focus-visible, .catalogTools select:focus-visible { outline: 2px solid var(--gold-light); }
+.catalogPagination { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+.catalogPagination button:disabled { opacity: .5; cursor: default; }
+.catalogProductImage { display: block; width: 100%; max-height: 220px; object-fit: contain; border-radius: 12px; }
+.productDetailImage .catalogProductImage { max-height: 480px; }
+.catalogGallery { display: grid; gap: 16px; }
+.catalogThumbnails { display: flex; flex-wrap: wrap; gap: 10px; }
+.catalogThumbnails button { width: 76px; min-height: 64px; background: var(--panel); border: 1px solid var(--soft-line); border-radius: 8px; color: var(--gold); cursor: pointer; }
+.catalogThumbnails button[aria-pressed="true"] { border-color: var(--gold-light); }
+.catalogThumbnails .catalogProductImage { max-height: 64px; }

@@ -3,8 +3,8 @@ import { adminProducts, adminCategories, adminServices, adminPromotions, adminQu
 // Contrato de lectura asíncrono. Sustituir cada adaptador por fetch al integrar Spring Boot.
 // Los componentes no importan mocks ni conocen las URLs del backend.
 export const adminEndpoints = {
-  dashboard: '/api/admin/dashboard', products: '/api/productos', categories: '/api/categorias',
-  services: '/api/servicios', promotions: '/api/promociones', quotes: '/api/cotizaciones',
+  dashboard: '/api/admin/dashboard', products: '/api/admin/productos', categories: '/api/admin/categorias',
+  services: '/api/admin/servicios', promotions: '/api/admin/promociones', quotes: '/api/admin/cotizaciones',
 }
 const mockResponse = async (data) => structuredClone(data)
 export const adminService = {

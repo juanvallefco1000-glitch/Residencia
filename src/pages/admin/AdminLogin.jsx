@@ -1,16 +1,18 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
 import logo from '../../assets/segurixt-logo-oficial.jpeg'
-import { login } from '../../services/admin/authService'
+import { login, ADMIN_ENABLED } from '../../services/admin/authService'
 import '../../styles/admin.css'
 
 export default function AdminLogin() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(location.state?.message || '')
   const [pending, setPending] = useState(false)
   async function submit(event) {
     event.preventDefault()
@@ -20,7 +22,7 @@ export default function AdminLogin() {
     setErrors(next); setMessage('')
     if (Object.keys(next).length) return
     setPending(true)
-    try { await login({ email: email.trim(), password }) }
+    try { await login({ email: email.trim(), password }); navigate('/admin', { replace: true }) }
     catch (error) { setMessage(error.message) }
     finally { setPending(false); setPassword('') }
   }
@@ -32,9 +34,9 @@ export default function AdminLogin() {
       {errors.email && <p id="email-error" className="adminError" role="alert">{errors.email}</p>}
       <label htmlFor="admin-password">Contraseña</label><div className="adminPassword"><input id="admin-password" type={visible ? 'text' : 'password'} autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} aria-invalid={!!errors.password} aria-describedby={errors.password ? 'password-error' : undefined} required /><button type="button" className="adminIconButton" onClick={() => setVisible(value => !value)} aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'} aria-pressed={visible}>{visible ? <EyeOff size={20} /> : <Eye size={20} />}</button></div>
       {errors.password && <p id="password-error" className="adminError" role="alert">{errors.password}</p>}
-      <button className="adminButton adminPrimary" disabled={pending}>{pending ? 'Validando…' : 'Iniciar sesión'}</button>
+      <button className="adminButton adminPrimary" disabled={pending || !ADMIN_ENABLED}>{pending ? 'Validando…' : 'Iniciar sesión'}</button>
       {message && <p className="adminNotice" role="status">{message}</p>}
     </form>
-    <p className="adminMuted">Acceso todavía no habilitado. No ingreses credenciales reales.</p><Link className="adminButton" to="/admin">Explorar demostración</Link><Link className="adminBackLink" to="/">Volver al sitio</Link>
+    <p className="adminMuted">{ADMIN_ENABLED ? 'Acceso reservado a personal autorizado. La sesión dura 15 minutos.' : 'Acceso administrativo no habilitado en este despliegue.'}</p><Link className="adminBackLink" to="/">Volver al sitio</Link>
   </section></main>
 }

@@ -8,7 +8,7 @@ import {
   Handshake,
   ShieldCheck,
 } from 'lucide-react'
-import { getFeaturedProducts } from '../services/catalogService'
+import useProductCatalog from '../hooks/useProductCatalog'
 import ServicesSection from '../components/ServicesSection'
 import ProductCard from '../components/ProductCard'
 
@@ -16,6 +16,7 @@ const benefitIcons = { experience: BadgeCheck, warranty: ShieldCheck, attention:
 
 export default function Home() {
   const location = useLocation()
+  const featured = useProductCatalog({ size: 4, destacado: true })
 
   useEffect(() => {
     if (location.hash === '#servicios') {
@@ -64,8 +65,7 @@ export default function Home() {
             <span className="sectionKicker">Catálogo</span>
             <h2>Productos destacados</h2>
             <p>
-              Vista preliminar del catálogo. Posteriormente los productos podrán
-              sincronizarse desde proveedores autorizados mediante el backend.
+              Explora productos para tu proyecto y consulta su disponibilidad con nuestro equipo.
             </p>
           </div>
           <Link className="button secondary" to="/catalogo">
@@ -74,10 +74,11 @@ export default function Home() {
         </div>
 
         <div className="productGrid">
-          {getFeaturedProducts().map((product) => (
+          {featured.products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
+        <p role="status">{featured.loading ? 'Cargando productos…' : featured.error || (featured.source === 'local' ? 'Catálogo local demostrativo.' : !featured.products.length ? 'No hay productos destacados disponibles.' : '')}</p>
       </section>
 
       <section className="section softSection">

@@ -12,6 +12,7 @@ import Promociones from './pages/Promociones'
 import Cotizacion from './pages/Cotizacion'
 import NotFound from './pages/NotFound'
 
+import RequireAdmin from './components/admin/RequireAdmin'
 import AdminLayout from './layouts/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -28,7 +29,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route element={<RequireAdmin />}><Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
         <Route path="productos" element={<AdminProductos />} />
         <Route path="categorias" element={<AdminCategorias />} />
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="empresa" element={<AdminEmpresa />} />
         <Route path="usuarios" element={<AdminUsuarios />} />
         <Route path="*" element={<AdminNotFound />} />
+      </Route>
       </Route>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
