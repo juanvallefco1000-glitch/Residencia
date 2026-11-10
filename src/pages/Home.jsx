@@ -36,26 +36,23 @@ export default function Home() {
 
         <div className="institutionalGrid">
           <article className="institutionalCard">
-            <span>01</span>
-            <h3>Descripción</h3>
+            <h3>Tecnología para tu día a día</h3>
             <p>{company.institutional.homeDescription}</p>
           </article>
 
           <article className="institutionalCard">
-            <span>02</span>
-            <h3>Objetivo</h3>
+            <h3>Te ayudamos a elegir</h3>
             <p>{company.institutional.homeObjective}</p>
           </article>
 
           <article className="institutionalCard">
-            <span>03</span>
-            <h3>Enfoque</h3>
+            <h3>Una solución a tu medida</h3>
             <p>{company.institutional.focus}</p>
           </article>
         </div>
 
         <Link className="textLink" to="/empresa">
-          Ver información de la empresa <ArrowRight size={16} />
+          Conoce nuestro equipo <ArrowRight size={16} />
         </Link>
       </section>
 

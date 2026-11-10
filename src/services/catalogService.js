@@ -36,7 +36,7 @@ export function adaptProduct(product) {
     model: product.modelo, category: product.categoria.slug, categoryName: product.categoria.nombre,
     description: product.descripcionCorta || product.descripcion || '',
     fullDescription: product.descripcion || product.descripcionCorta || '',
-    price: product.mostrarPrecio && product.precio != null ? product.precio : null,
+    price: product.mostrarPrecio ? publicSalePrice(product.precio) : null,
     featured: product.destacado, images: product.imagenes || [],
   }
 }
@@ -71,4 +71,15 @@ export async function loadProduct(id, options) {
   if (API_URL) return { product: adaptProduct(await obtenerProductoPorId(id, options)), source: 'api' }
   const product = getProductById(id)
   return { product: product ? { ...product, price: null, categoryName: getCatalogCategory(product.category)?.title } : null, source: 'local' }
+}
+
+// Un único criterio para catálogo y selección del cotizador; cero no es precio de venta.
+export function publicSalePrice(value) {
+  if (value == null || typeof value === 'boolean' || (typeof value === 'string' && !value.trim())) return null
+  const amount = Number(value)
+  return Number.isFinite(amount) && amount > 0 ? amount : null
+}
+export function formatSalePrice(value) {
+  const amount = publicSalePrice(value)
+  return amount == null ? 'Consultar precio' : new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 }).format(amount)
 }

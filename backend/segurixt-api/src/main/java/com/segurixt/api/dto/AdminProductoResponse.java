@@ -9,5 +9,5 @@ public record AdminProductoResponse(
     boolean mostrarPrecio, boolean destacado, boolean activo,
     Categoria categoria, List<ImagenProductoResponse> imagenes
 ) {
-    public record Categoria(Long id, String nombre, String slug, boolean activo) {}
+    public record Categoria(Long id, String nombre, String slug, boolean activo, String descripcion, Integer orden) {}
 }

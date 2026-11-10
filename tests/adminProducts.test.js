@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createProductAdminService, validateImage } from '../src/services/admin/productAdminService.js'
+import { createProductAdminService, validateImage, validateProductPrice } from '../src/services/admin/productAdminService.js'
 import { createAuthClient } from '../src/services/admin/authService.js'
 
 const response = (body, status = 200) => ({ ok: status < 400, status, json: async () => body })
@@ -68,4 +68,24 @@ test('crear categoría usa POST protegido y conserva el error HTTP de la API', a
   const error = Object.assign(new Error('Categorías no disponibles'), { status: 503 })
   const failed = createProductAdminService(async () => { throw error })
   await assert.rejects(failed.categories(), e => e === error && e.status === 503)
+})
+
+test('visibilidad requiere precio positivo y permite conservar importes ocultos', () => {
+  for (const price of [1000, '1100.00', '1200.00', 999.83]) assert.equal(validateProductPrice(price,true), '')
+  for (const price of ['', null, undefined, 0, '0.00', -1, 'invalido', Infinity, '1.234']) assert.ok(validateProductPrice(price,true))
+  assert.equal(validateProductPrice('',false), '')
+  assert.equal(validateProductPrice('0',false), '')
+  assert.equal(validateProductPrice('999.83',false), '')
+})
+test('guardar y releer un producto conserva booleano de visibilidad y precio', async () => {
+  let stored = { id: 8, nombre: 'Switch', precio: 1000, mostrarPrecio: false }
+  const service = createProductAdminService(async (path, options) => {
+    if (options?.method === 'PUT') stored = { ...stored, ...JSON.parse(options.body) }
+    return structuredClone(stored)
+  })
+  await service.update(8, { precio: 1000, mostrarPrecio: true })
+  assert.equal((await service.detail(8)).mostrarPrecio,true)
+  await service.update(8, { precio: 1000, mostrarPrecio: false })
+  const hidden = await service.detail(8)
+  assert.equal(hidden.mostrarPrecio,false); assert.equal(hidden.precio,1000)
 })

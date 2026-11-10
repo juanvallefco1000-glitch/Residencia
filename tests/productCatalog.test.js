@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createPublicApi, resolveApiUrl } from '../src/services/publicApi.js'
-import { localCatalog, adaptProduct } from '../src/services/catalogService.js'
+import { localCatalog, adaptProduct, publicSalePrice, formatSalePrice } from '../src/services/catalogService.js'
 
 test('HTTP conserva filtros, paginación y AbortSignal', async () => {
   const controller = new AbortController()
@@ -54,4 +54,24 @@ test('producción nunca consulta localhost y admite futura API HTTPS', () => {
   assert.equal(resolveApiUrl('https://127.0.0.1:8080', true), '')
   assert.equal(resolveApiUrl('', true), '')
   assert.equal(resolveApiUrl('https://api.example.com/', true), 'https://api.example.com')
+})
+
+import { toQuoteProduct } from '../src/services/quoteService.js'
+
+test('precio de API coincide en catálogo y cotizador con moneda MXN', () => {
+  const product = { id: 51, nombre: 'Cámara', categoria: { slug: 'seguridad' }, precio: '1250.00', mostrarPrecio: true, imagenes: [{ url: '/api/productos/imagenes/real.png', principal: true }] }
+  const catalog = adaptProduct(product)
+  const quote = toQuoteProduct(product)
+  assert.equal(catalog.price, 1250); assert.equal(quote.price, catalog.price)
+  assert.equal(formatSalePrice(catalog.price), '$1,250.00')
+  assert.deepEqual(catalog.images, quote.images)
+})
+test('precio inválido o no publicado muestra Consultar precio sin inventar importes', () => {
+  for (const price of [null, undefined, '', ' ', 0, '0.00', -1, NaN, Infinity, 'incorrecto', false]) {
+    assert.equal(publicSalePrice(price), null)
+    assert.equal(formatSalePrice(price), 'Consultar precio')
+  }
+  assert.equal(publicSalePrice('0.50'), 0.5)
+  const dto = { id: 1, precio: 100, mostrarPrecio: false, categoria: {} }
+  assert.equal(adaptProduct(dto).price, null); assert.equal(toQuoteProduct(dto).price, null)
 })

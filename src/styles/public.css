@@ -1,0 +1,209 @@
+/* Ajustes comerciales limitados al layout público; el panel conserva sus estilos. */
+.app {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --text: #20252a;
+  --muted: #595f66;
+  --gold-light: #805617;
+  --gold-fill: #f0b45b;
+  --line: rgba(128, 86, 23, .25);
+  --soft-line: rgba(32, 37, 42, .13);
+  min-height: 100vh;
+  color: var(--text);
+  color-scheme: light;
+  background: #ffffff;
+}
+body:has(.app), html:has(.app) { background: #ffffff; }
+.app main { min-width: 0; }
+.app .navbar {
+  color: var(--text);
+  background: linear-gradient(180deg, #d6d6d6 0%, #f0f0f0 48%, #c5c5c5 100%);
+  border-bottom: 1px solid rgba(32, 37, 42, .2);
+}
+.app .navLinks { color: var(--text); }
+.app .navLinks.open { background: #ffffff; }
+.app .dropdownPanel { background: #ffffff; box-shadow: 0 12px 30px rgba(32, 37, 42, .1); }
+.app .logoNavbar, .app .logoFooter { border-radius: 8px; }
+.app .secondary { color: var(--text); background: #ffffff; border-color: var(--soft-line); }
+.app .quoteForm label { color: var(--text); }
+.app .quoteForm :where(input, textarea) { background: #ffffff; color: var(--text); border-color: var(--soft-line); }
+.app :where(input, textarea)::placeholder { color: #6b7076; opacity: 1; }
+.app .productDetailImage { background: #f7f7f7; }
+.app .contentCard, .app .sideCta, .app .quoteForm, .app .quoteSummary { box-shadow: 0 4px 18px rgba(32, 37, 42, .045); }
+.app :where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
+}
+.app .section { padding-block: 68px; }
+.app .sectionKicker { text-transform: none; letter-spacing: .025em; font-size: .88rem; font-weight: 600; }
+.app .sectionHeading { margin-bottom: 30px; }
+.app .sectionHeading h2,
+.app .cta h2 { font-size: clamp(1.65rem, 2.8vw, 2.65rem); line-height: 1.2; letter-spacing: -.025em; }
+.app .pageHero { padding-block: 64px 44px; background: #ffffff; }
+.app .pageHero h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); line-height: 1.15; letter-spacing: -.025em; }
+.app .sectionHeading p { margin-bottom: 0; max-width: 65ch; }
+.app .softSection { background: #f7f7f7; }
+.app .button { border-radius: 12px; font-weight: 650; transition: background-color .18s ease, border-color .18s ease, transform .18s ease; }
+.app .primary { background: var(--gold-fill); color: #202020; }
+.app .primary:hover { background: var(--gold); }
+.app .secondary:hover { background: #f7f7f7; border-color: var(--gold); }
+.app .navCta { background: var(--gold); color: #111 !important; font-weight: 650; border-radius: 12px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.app .navCta:hover { background: var(--gold-fill); }
+.app .institutionalGrid { gap: 28px; }
+.app .institutionalCard { padding: 8px 0 8px 22px; border: 0; border-left: 2px solid var(--line); border-radius: 0; background: transparent; }
+.app .institutionalCard h3 { margin-top: 0; font-size: 1.15rem; }
+.app .institutionalCard p { margin-bottom: 0; }
+.app .serviceCard { border-radius: 20px; background: var(--panel); box-shadow: 0 6px 20px rgba(32, 37, 42, .055); }
+.app .serviceCard.serviceCardDetailed { padding: 28px 24px; }
+.app .serviceCardDetailed .serviceCardTitle { letter-spacing: 0; font-weight: 650; }
+.app .serviceCardDetailed .serviceCardIcon { width: 84px; height: 84px; margin-block: 20px 24px; border: 0; background: rgba(216, 157, 68, .1); }
+.app .serviceCard:hover { transform: translateY(-3px); }
+.app .productGrid { gap: 22px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.app .productCard { display: flex; flex-direction: column; min-width: 0; padding: 18px; border-radius: 20px; box-shadow: 0 6px 20px rgba(32, 37, 42, .055); transition: border-color .18s ease, transform .18s ease; }
+.app .productCard:hover { border-color: var(--line); transform: translateY(-3px); }
+.app .productPlaceholder { height: 225px; min-height: 0; padding: 18px; background: #f4f2ed; color: #775322; }
+.app .productPlaceholder .catalogProductImage { height: 100%; max-height: 189px; border-radius: 0; }
+.app .productBrand { text-transform: none; letter-spacing: .02em; font-size: .8rem; }
+.app .productCard h3 { font-size: 1.08rem; line-height: 1.4; overflow-wrap: anywhere; }
+.app .productCard p { min-height: 0; line-height: 1.65; overflow-wrap: anywhere; }
+.app .productCardPrice { margin-top: auto; padding-block: 10px 18px; font-size: 1.2rem; font-weight: 700; }
+.app .productCard > a { justify-content: space-between; min-height: 46px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 11px; background: rgba(216, 157, 68, .07); font-weight: 650; }
+.app .productCard > a:hover { background: rgba(216, 157, 68, .14); }
+.app .productCard > a.primary { color: #202020; background: var(--gold-fill); border-color: var(--gold); }
+.app .productCard > a.primary:hover { background: var(--gold); }
+.app .productCard .productDetailLink { border: 0; background: transparent; justify-content: center; padding: 8px; margin-top: 6px; font-size: .85rem; }
+.app .productCardPrice small { font-size: .75rem; }
+.app .catalogCategoryCard { padding: 24px; background: var(--panel); }
+.app .catalogCategoryCard h2 { margin-top: 0; font-size: 1.25rem; }
+.app .catalogTools { gap: 20px; margin-bottom: 30px; }
+.app .catalogTools :where(input, select) { min-height: 48px; }
+.app .benefitCard { padding: 20px 10px; background: transparent; border: 0; }
+.app .benefitCard h3 { font-size: 1rem; }
+.app .benefitCard p { color: var(--muted); line-height: 1.65; }
+.app .cta { padding: 36px; background: #f7f7f7; }
+.app .productDetail h1 { font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.2; overflow-wrap: anywhere; }
+.app .productDetail > *, .app .detailLayout > * { min-width: 0; }
+.app .productDetail p { line-height: 1.7; }
+.app .formNote { color: var(--muted); }
+.app .footer { padding-block: 52px 28px; gap: 36px; background: #f7f7f7; }
+.app .logoFooter { max-width: 100%; }
+.app .footerLinks { gap: 4px; }
+.app .footerLinks a { display: flex; align-items: center; min-height: 44px; }
+@media (max-width: 1100px) {
+  .app .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .app .section { padding-block: 44px; }
+  .app #servicios { padding: 36px 16px; }
+  .app #servicios .sectionKicker { font-size: .85rem; letter-spacing: .025em; }
+  .app #servicios .sectionHeading h2 { font-size: clamp(1.5rem, 5vw, 1.9rem); line-height: 1.2; }
+  .app .mobileServiceOption { font-size: clamp(.68rem, 2.6vw, .8rem); font-weight: 600; padding-inline: 3px; }
+  .app .pageHero { padding-block: 44px 32px; }
+  .app .cta { padding: 28px 22px; gap: 22px; }
+  .app .productDetail { gap: 28px; }
+}
+@media (max-width: 560px) {
+  .app .productGrid { grid-template-columns: minmax(0, 1fr); }
+  .app .productPlaceholder { height: 250px; }
+  .app .productPlaceholder .catalogProductImage { max-height: 214px; }
+  .app .cta .button { width: 100%; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.app) { scroll-behavior: auto; }
+  .app *, .app *::before, .app *::after { transition: none !important; animation: none !important; }
+  .app :where(.button, .serviceCard, .productCard, .catalogCategoryCard):hover { transform: none; }
+}
+
+/* Cotizador público: selección y resumen apilables, sin tablas administrativas. */
+.app .quoteBuilder { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); align-items: start; gap: 28px; }
+.app .quoteBuilder > * { min-width: 0; }
+.app .quoteSteps { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 20px; }
+.app .quoteSteps [aria-current="step"] { border-color: var(--gold); color: var(--gold-light); }
+.app .quoteBuilder .quoteForm { margin-bottom: 24px; }
+.app .quoteBuilder :where(select) { width: 100%; min-height: 48px; padding: 12px; background: var(--panel); color: var(--text); border: 1px solid var(--soft-line); border-radius: 10px; font: inherit; }
+.app .quoteProductList, .app .quoteBreakdown { list-style: none; padding: 0; margin: 0; }
+.app .quoteProductList { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-bottom: 24px; }
+.app .quoteProductList .quoteProductRow { min-width: 0; display: grid; grid-template-columns: 100px minmax(0, 1fr) 160px; align-items: center; gap: 16px; padding: 16px; border: 1px solid var(--soft-line); border-radius: 14px; background: #ffffff; box-shadow: 0 5px 16px rgba(32,37,42,.055); }
+.app .quoteProductList li > div { min-width: 0; overflow-wrap: anywhere; }
+.app .quoteProductList button { flex-shrink: 0; }
+.app .quoteSelectedItem { display: grid; grid-template-columns: minmax(0,1fr) 95px auto; gap: 12px; align-items: center; padding-block: 14px; border-bottom: 1px solid var(--soft-line); }
+.app .quoteSelectedItem strong { overflow-wrap: anywhere; }
+.app .quoteSelectedItem label { margin: 0; }
+.app .quoteSummary { position: sticky; top: 100px; max-height: calc(100dvh - 120px); overflow-y: auto; padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel); }
+.app .quoteSummary p { color: var(--muted); line-height: 1.65; }
+.app .quoteSummary h2, .app .quoteForm h2 { font-size: 1.3rem; margin-top: 0; }
+.app .quoteBreakdown li { display: grid; gap: 7px; padding-block: 16px; border-bottom: 1px solid var(--soft-line); overflow-wrap: anywhere; }
+.app .quoteBreakdown span { color: var(--muted); font-size: .9rem; }
+.app .quotePending { color: var(--gold-light); line-height: 1.6; }
+.app .quoteSummary dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-block: 10px; }
+.app .quoteSummary dd { margin: 0; }
+.app .quoteTotal { color: var(--gold-light); font-size: 1.15rem; font-weight: 700; }
+.app .quoteBuilder button:disabled { opacity: .55; cursor: default; transform: none; }
+@media (max-width: 1000px) {
+  .app .quoteBuilder { grid-template-columns: minmax(0, 1fr); }
+  .app .quoteSummary { position: static; max-height: none; overflow-y: visible; }
+}
+@media (max-width: 560px) {
+  .app .quoteSelectedItem { grid-template-columns: minmax(0, 1fr) 90px; }
+  .app .quoteSelectedItem button { grid-column: 1 / -1; }
+  .app .quoteProductList li { flex-wrap: wrap; }
+  .app .quoteSummary { padding: 20px; }
+}
+
+.app .quoteProductQuantity { margin: 0; font-size: .85rem; }
+.app .quoteQuantityControls { min-width: 0; }
+.app .quoteQuantityControls > div { display: flex; gap: 6px; margin-top: 8px; }
+.app .quoteQuantityControls .button { min-width: 44px; padding-inline: 10px; }
+.app .quoteSelectedItem { grid-template-columns: minmax(0, 1fr) 130px auto; }
+.app .quoteSelectedItem p { margin-block: 8px; font-size: .9rem; }
+.app .quoteSteps button:disabled { opacity: .55; }
+@media (max-width: 560px) {
+  .app .quoteSelectedItem { grid-template-columns: minmax(0, 1fr) 120px; }
+}
+
+.app .quoteProductImage { height: 110px; display: grid; place-items: center; padding: 12px; border-radius: 12px; background: #f4f2ed; }
+.app .quoteProductImage .catalogProductImage { width: 100%; height: 100%; max-height: 86px; object-fit: contain; border-radius: 0; }
+.app .quoteProductRow h3 { margin: 0; font-size: 1rem; line-height: 1.45; overflow-wrap: anywhere; }
+.app .quoteProductRow p { margin: 0; line-height: 1.6; }
+.app .quoteProductMeta, .app .quoteProductDescription { color: var(--muted); font-size: .85rem; overflow-wrap: anywhere; }
+.app .quoteProductInfo { display: grid; gap: 6px; }
+.app .quoteProductActions { display: grid; gap: 10px; min-width: 0; }
+.app .quoteProductRow .quoteProductPrice { margin: 0; font-size: 1.15rem; font-weight: 700; color: var(--gold-light); }
+.app .quoteProductPrice small { font-size: .75rem; font-weight: 500; }
+.app .quoteProductRow .button { width: 100%; padding: 10px; font-size: .85rem; line-height: 1.4; }
+.app .quoteAdded { color: var(--gold-light); font-size: .8rem; }
+.app .productImageFallback { display: grid; justify-items: center; gap: 6px; max-width: 100%; color: #66563e; font-size: .75rem; text-align: center; }
+.app .productImageFallback img { display: block; max-width: 100%; width: 110px; height: auto; }
+.app .quoteSelectedProduct { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.app .quoteSelectedProduct > div { min-width: 0; overflow-wrap: anywhere; }
+.app .quoteSelectedImage { flex: 0 0 78px; min-height: 78px; padding: 5px; display: grid; place-items: center; background: #f4f2ed; border-radius: 10px; }
+.app .quoteSelectedImage .catalogProductImage { width: 68px; height: 68px; object-fit: contain; border-radius: 0; }
+.app .quoteSelectedImage .productImageFallback { font-size: .6rem; }
+.app .quoteSelectedImage .productImageFallback img { width: 52px; }
+.app .quoteQuantityControls label { overflow-wrap: anywhere; }
+.app .quoteSelectionTotal { display: grid; gap: 8px; padding-top: 16px; color: var(--gold-light); }
+.app .quoteSelectionTotal small { color: var(--muted); }
+@media (max-width: 600px) {
+  .app .quoteProductList .quoteProductRow { grid-template-columns: 80px minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .app .quoteProductImage { height: 90px; padding: 6px; }
+  .app .quoteProductImage .catalogProductImage { max-height: 78px; }
+  .app .quoteProductImage .productImageFallback { font-size: .6rem; }
+  .app .quoteProductActions { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) 100px; align-items: center; }
+  .app .quoteProductActions > .button, .app .quoteProductActions > .quoteAdded { grid-column: 1 / -1; }
+  .app .quoteSelectedItem { grid-template-columns: minmax(0, 1fr); }
+  .app .quoteSelectedItem > button { grid-column: auto; }
+  .app .quoteQuantityControls { max-width: 160px; }
+}
+
+.app .quoteSummary h3 { margin: 22px 0 8px; font-size: 1rem; color: var(--text); }
+.app .quoteSummary section > small, .app .quoteSummary > small { display: block; color: var(--muted); line-height: 1.6; }
+.app .quoteSummary .quoteBreakdown { max-height: 240px; overflow-y: auto; }
+.app .quoteEquipmentBreakdown > li > span > span { display: inline; }
+.app .quoteSummary .quoteBudgetPending { padding: 12px; background: #f7f7f7; border-radius: 10px; font-size: .88rem; }
+.app .quoteBudgetTotal { overflow-wrap: anywhere; }
+
+.app .cameraRunList { display: grid; gap: 12px; }
+.app .cameraRunRow { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--soft-line); }
+.app .cameraRunRow label { margin-bottom: 0; }
+.app .cameraRunRow span { color: var(--muted); font-size: .85rem; }
+@media (max-width: 700px) { .app .cameraRunRow { grid-template-columns: minmax(0,1fr); } }

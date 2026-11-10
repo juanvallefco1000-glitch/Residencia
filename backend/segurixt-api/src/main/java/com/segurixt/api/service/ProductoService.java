@@ -59,7 +59,7 @@ public class ProductoService {
         var porProducto = imagenes.findByProductoIdInOrderByPrincipalDescOrdenAscIdAsc(items.stream().map(Producto::getId).toList())
             .stream().collect(Collectors.groupingBy(i -> i.getProducto().getId()));
         return items.stream().map(p -> {
-            boolean mostrarPrecio = Boolean.TRUE.equals(p.getMostrarPrecio()) && p.getPrecio() != null && p.getPrecio().signum() >= 0;
+            boolean mostrarPrecio = Boolean.TRUE.equals(p.getMostrarPrecio()) && p.getPrecio() != null && p.getPrecio().signum() > 0;
             var fotos = porProducto.getOrDefault(p.getId(), List.of()).stream()
                 .map(i -> new ImagenProductoResponse(i.getId(), i.getUrl(), i.getTextoAlt(), Boolean.TRUE.equals(i.getPrincipal()), i.getOrden())).toList();
             return new ProductoResponse(p.getId(), p.getNombre(), p.getSlug(), p.getMarca(), p.getModelo(),

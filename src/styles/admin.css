@@ -137,3 +137,17 @@
 .adminRoot .adminImageItem img { width: 72px; height: 72px; object-fit: contain; }
 .adminRoot .adminThumbnail img { width: 100%; height: 100%; object-fit: contain; }
 .adminRoot .adminProductPagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+
+/* Formularios de configuración y detalle del cotizador. */
+.adminRoot .adminQuotePanel { margin-top: 24px; overflow-wrap: anywhere; }
+.adminRoot .adminQuotePanel fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.adminRoot .adminQuotePanel label { margin-bottom: 16px; }
+.adminRoot .adminQuotePanel .formGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.adminRoot .adminQuoteCheckbox { display: flex; align-items: center; gap: 10px; }
+.adminRoot .adminQuoteCheckbox input { width: 20px; min-height: 20px; accent-color: var(--gold); }
+@media (max-width: 1000px) {
+  .adminRoot .adminQuotePanel .formGrid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.adminRoot .adminTariffRow { margin: 16px 0; padding: 16px; border: 1px solid var(--soft-line); border-radius: 10px; }
+.adminRoot .adminQuotePanel section { margin-bottom: 24px; }

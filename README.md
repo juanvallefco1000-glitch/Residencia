@@ -147,3 +147,5 @@ Comprobar también en navegador: menú a 320 px y 850 px, escritorio a 851 px o
 más, Tab/Shift+Tab, Enter/Espacio, Escape, clic exterior, atrás/adelante y cambio
 de tamaño con el menú abierto. Recorrer categorías, productos válidos e
 inexistentes, cotización y WhatsApp. El diseño y las rutas públicas se conservan.
+
+La preparación revisable para Vercel, Render Docker y MySQL está en [PREPARACION_PRODUCCION.md](PREPARACION_PRODUCCION.md). Sus pasos de publicación y migración requieren aprobación; no se ejecutan automáticamente.

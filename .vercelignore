@@ -1,0 +1,16 @@
+backend/
+database/
+tests/
+docs/
+.env*
+*.zip
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+.git/
+.agents/
+.codex/
+.aws/

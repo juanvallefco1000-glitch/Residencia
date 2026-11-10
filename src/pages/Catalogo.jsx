@@ -12,7 +12,7 @@ export default function Catalogo() {
     <main>
       <section className="pageHero">
         <span className="sectionKicker">Catálogo digital</span>
-        <h1>Consulta productos por categoría</h1>
+        <h1>Encuentra lo que necesitas</h1>
         <p>
           Explora nuestras soluciones tecnológicas y solicita una cotización.
           Confirma disponibilidad y características con nuestro equipo.
@@ -23,7 +23,6 @@ export default function Catalogo() {
         <div className="catalogCategoryGrid">
           {catalog.categories.map((category) => (
             <Link className="catalogCategoryCard" key={category.slug} to={`/catalogo/${category.slug}`}>
-              <span className="categoryIndex">CAT</span>
               <h2>{category.title}</h2>
               <p>{category.description}</p>
               <span className="textLink">Explorar <ArrowRight size={16} /></span>

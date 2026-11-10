@@ -73,4 +73,13 @@ class ProductoServiceTest {
         assertTrue(service.listar(2, 12, null, null, null).content().isEmpty());
         verifyNoInteractions(imagenes);
     }
+    @Test void precioCeroONegativoSePresentaComoPendienteSinCambiarElProducto() {
+        var zero = producto(4, true, BigDecimal.ZERO);
+        var negative = producto(5, true, new BigDecimal("-1.00"));
+        when(productos.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(zero, negative)));
+        when(imagenes.findByProductoIdInOrderByPrincipalDescOrdenAscIdAsc(List.of(4L,5L))).thenReturn(List.of());
+        var result=service.listar(0,12,null,null,null);
+        assertTrue(result.content().stream().allMatch(p -> p.precio()==null && !p.mostrarPrecio()));
+        assertEquals(BigDecimal.ZERO,zero.getPrecio());
+    }
 }

@@ -2,14 +2,15 @@ import './ServicioCategoria.css'
 import ServiceIcon from '../components/ServiceIcon'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, MessageCircle } from 'lucide-react'
-import { getServiceCategory } from '../services/serviceCatalogService'
 import usePublicServices from '../hooks/usePublicServices'
 import ServiceCatalogStatus from '../components/ServiceCatalogStatus'
 
 export default function ServicioCategoria() {
   const { slug } = useParams()
   const { categories, loading, error } = usePublicServices()
-  const service = categories.find((item) => item.slug === slug || item.aliases?.includes(slug)) ?? getServiceCategory(slug)
+  const service = categories.find((item) => item.slug === slug || item.aliases?.includes(slug))
+
+  if (!service && (loading || error)) return <main className="simplePage"><ServiceCatalogStatus loading={loading} error={error} /></main>
 
   if (!service) {
     return (

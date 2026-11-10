@@ -11,7 +11,8 @@ export default function ServicesSection() {
     <section id="servicios" className="section softSection" aria-labelledby="services-heading">
       <div className="sectionHeading">
         <span className="sectionKicker">Nuestros servicios</span>
-        <h2 id="services-heading">Soluciones tecnológicas para tu seguridad y conectividad</h2>
+        <h2 id="services-heading">Cuida y conecta lo que más te importa</h2>
+        <p>Explora nuestros servicios de seguridad, conectividad e instalación para tu hogar o negocio.</p>
       </div>
       <ServiceCatalogStatus loading={loading} error={error} />
       <div className="serviceGrid servicesSectionGrid">

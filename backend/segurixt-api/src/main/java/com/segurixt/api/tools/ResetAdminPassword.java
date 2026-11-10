@@ -24,6 +24,7 @@ public class ResetAdminPassword {
     @EnableAutoConfiguration
     @EntityScan("com.segurixt.api.entity")
     @EnableJpaRepositories("com.segurixt.api.repository")
+    @org.springframework.context.annotation.Import(com.segurixt.api.config.JdbcTrustStoreConfig.class)
     public static class Config {}
 
     public static void main(String[] args) {

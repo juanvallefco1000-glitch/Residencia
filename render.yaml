@@ -1,0 +1,38 @@
+# Plantilla para revisar. NO se aplicó ni se creó ningún recurso.
+# Requiere aprobación, MySQL preparado y un plan con disco persistente.
+services:
+  - type: web
+    name: segurixt-api
+    runtime: docker
+    rootDir: backend/segurixt-api
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: standard
+    numInstances: 1
+    autoDeployTrigger: "off"
+    healthCheckPath: /api/health
+    disk:
+      name: product-images
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: PORT
+        value: "10000"
+      - key: PRODUCTS_IMAGES_DIRECTORY
+        value: /var/data/productos
+      - key: AUTH_JWT_ISSUER
+        value: segurixt-api
+      - key: DB_POOL_SIZE
+        value: "5"
+      - key: DB_JDBC_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: AUTH_JWT_SECRET
+        sync: false
+      - key: AUTH_CORS_ORIGINS
+        sync: false

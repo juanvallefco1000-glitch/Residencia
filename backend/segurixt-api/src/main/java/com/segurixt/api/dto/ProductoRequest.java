@@ -16,6 +16,6 @@ public record ProductoRequest(
     @NotNull Boolean destacado,
     @NotNull Boolean activo
 ) {
-    @AssertTrue(message="Indica un precio para mostrarlo")
-    public boolean isPrecioVisibleValido() { return !Boolean.TRUE.equals(mostrarPrecio) || precio != null; }
+    @AssertTrue(message="Indica un precio mayor que cero para mostrarlo en el catálogo público")
+    public boolean isPrecioVisibleValido() { return !Boolean.TRUE.equals(mostrarPrecio) || (precio != null && precio.signum() > 0); }
 }

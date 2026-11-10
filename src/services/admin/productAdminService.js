@@ -42,3 +42,11 @@ export function imagePayload(file, textoAlt, principal) {
     reader.readAsDataURL(file)
   })
 }
+
+// Publicar un precio exige un importe de venta positivo. Ocultarlo no lo elimina.
+export function validateProductPrice(value, visible) {
+  const empty = value == null || String(value).trim() === ''
+  if (visible && (empty || Number(value) <= 0)) return 'Indica un precio mayor que cero para mostrarlo en el catálogo público.'
+  if (!empty && (!Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 9999999999.99 || !/^\d+(\.\d{1,2})?$/.test(String(value)))) return 'El precio debe ser positivo o cero y tener como máximo dos decimales.'
+  return ''
+}

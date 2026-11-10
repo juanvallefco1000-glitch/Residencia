@@ -41,9 +41,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/api/admin/productos/**", "/api/admin/servicios/**", "/api/admin/categorias/**", "/api/admin/promociones/**", "/api/admin/cotizaciones/**").hasAnyRole("ADMIN", "EDITOR")
                 .requestMatchers(HttpMethod.DELETE, "/api/admin/promociones/**", "/api/admin/cotizaciones/**").hasAnyRole("ADMIN", "EDITOR")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/health", "/api/cotizador/productos", "/api/cotizador/instalacion").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/cotizador/estimar", "/api/cotizador/solicitudes").permitAll()
                 .requestMatchers(
                     HttpMethod.GET,
+                    "/api/promociones",
                     "/api/categorias-servicio",
                     "/api/servicios",
                     "/api/categorias-producto",
@@ -59,11 +61,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    UrlBasedCorsConfigurationSource corsConfigurationSource(@org.springframework.beans.factory.annotation.Value("${auth.cors.origins:http://localhost:5173,http://127.0.0.1:5173}") String origins) {
+    UrlBasedCorsConfigurationSource corsConfigurationSource(@org.springframework.beans.factory.annotation.Value("${auth.cors.origins}") String origins) {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(origins.split(",")));
+        config.setAllowedOrigins(CorsOrigins.parse(origins, false));
+        config.setAllowCredentials(false);
+        config.setMaxAge(600L);
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Content-Type", "Accept", "Authorization"));

@@ -669,3 +669,5 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .productDetailImage { min-height: 330px; }
   .quoteForm { padding: 20px; }
 }
+
+.promotionGrid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }

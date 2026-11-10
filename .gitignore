@@ -35,3 +35,25 @@ Thumbs.db
 *.pfx
 # Imágenes de productos administradas por el backend
 backend/segurixt-api/uploads/
+
+
+# Configuración de producción, proveedores y copias locales
+.env
+.env.*
+!.env.example
+!.env.production.example
+.vercel/
+*.jks
+*.keystore
+*.cnf
+*.dump
+*.sql.gz
+*.bak
+*.zip
+
+# Configuración local de agentes y proveedores
+.aws/
+.codex/
+.agents/
+
+/backend/segurixt-api/.local-preprod/

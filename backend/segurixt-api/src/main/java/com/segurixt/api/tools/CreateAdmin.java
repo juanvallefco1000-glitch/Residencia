@@ -17,7 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class CreateAdmin {
  @Configuration @Profile("bootstrap-admin") @EnableAutoConfiguration
  @EntityScan("com.segurixt.api.entity") @EnableJpaRepositories("com.segurixt.api.repository")
- public static class Config {}
+ @org.springframework.context.annotation.Import(com.segurixt.api.config.JdbcTrustStoreConfig.class)
+    public static class Config {}
  public static void main(String[] args) {
   var console=System.console();
   if(console==null) throw new IllegalStateException("Ejecuta en una terminal interactiva.");

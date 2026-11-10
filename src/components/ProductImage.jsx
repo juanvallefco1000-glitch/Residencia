@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { Box } from 'lucide-react'
 import './ProductCatalog.css'
-import { productImageUrl } from '../services/publicApi.js'
+import { API_URL } from '../services/publicApi.js'
+import { primaryProductImage, resolveProductImage } from '../services/productImages.js'
+import imageUnavailable from '../assets/product-image-unavailable.svg'
 
-export default function ProductImage({ images = [], name, size = 44 }) {
-  const first = images[0]
-  const src = productImageUrl(first?.url)
+export default function ProductImage({ images = [], name, size = 44, showFallback = false }) {
+  const first = primaryProductImage(images)
+  const src = resolveProductImage(first?.url, API_URL, import.meta.env.BASE_URL)
   const [failedUrl, setFailedUrl] = useState(null)
-  // Solo imágenes HTTP(S) o rutas del sitio; se descartan protocolos no adecuados.
-  const safe = src && !src.startsWith('//') && (/^https?:\/\//i.test(src) || !/^[a-z][a-z\d+.-]*:/i.test(src))
-  if (!safe || failedUrl === src) return <Box size={size} aria-label="Sin imagen disponible" />
-  const resolved = /^https?:\/\//i.test(src) || src.startsWith('/') ? src : `${import.meta.env.BASE_URL}${src}`
-  return <img className="catalogProductImage" src={resolved} alt={first.textoAlt || name} loading="lazy" onError={() => setFailedUrl(src)} />
+  if (!src || failedUrl === src) {
+    return showFallback ? <span className="productImageFallback"><img src={imageUnavailable} alt="" aria-hidden="true" loading="lazy" /><span>Imagen no disponible</span></span> : <Box size={size} aria-label="Sin imagen disponible" />
+  }
+  return <img className="catalogProductImage" src={src} alt={first.textoAlt || name} loading="lazy" onError={() => setFailedUrl(src)} />
 }

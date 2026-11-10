@@ -33,8 +33,20 @@ public class AdminProductoService {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Ya existe una categoría con ese slug.");
         var category=new CategoriaProducto();
         category.setNombre(request.nombre().trim()); category.setSlug(request.slug());
-        category.setDescripcion(trim(request.descripcion())); category.setOrden(0); category.setActivo(true);
+        category.setDescripcion(trim(request.descripcion())); category.setOrden(request.orden()==null ? 0 : request.orden()); category.setActivo(request.activo()==null ? true : request.activo());
         return categoria(categorias.saveAndFlush(category));
+    }
+
+    @Transactional
+    public AdminProductoResponse.Categoria actualizarCategoria(long id, CategoriaProductoUpdateRequest r, Usuario.Rol rol) {
+        var c=categorias.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Categoría no encontrada."));
+        if (rol!=Usuario.Rol.ADMIN && !Objects.equals(c.getActivo(),r.activo()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Solo ADMIN puede cambiar el estado de categorías.");
+        if(categorias.existsBySlugAndIdNot(r.slug(),id))
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Ya existe una categoría con ese slug.");
+        c.setNombre(r.nombre().trim()); c.setSlug(r.slug()); c.setDescripcion(trim(r.descripcion()));
+        c.setOrden(r.orden()); c.setActivo(r.activo());
+        return categoria(categorias.saveAndFlush(c));
     }
 
     public PaginaResponse<AdminProductoResponse> listar(int page, int size, String q, Long categoriaId, Boolean activo) {
@@ -98,7 +110,7 @@ public class AdminProductoService {
 
     private static String trim(String s) { return s==null ? null : s.trim(); }
     private static AdminProductoResponse.Categoria categoria(CategoriaProducto c) {
-        return new AdminProductoResponse.Categoria(c.getId(),c.getNombre(),c.getSlug(),Boolean.TRUE.equals(c.getActivo()));
+        return new AdminProductoResponse.Categoria(c.getId(),c.getNombre(),c.getSlug(),Boolean.TRUE.equals(c.getActivo()),c.getDescripcion(),c.getOrden());
     }
     private List<AdminProductoResponse> presentar(List<Producto> items) {
         if(items.isEmpty()) return List.of();

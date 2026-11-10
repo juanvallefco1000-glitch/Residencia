@@ -45,6 +45,7 @@ export function createPublicApi(baseUrl, fetchImpl = globalThis.fetch) {
   }
   return {
     obtenerCategoriasServicio: (options) => consultar('/api/categorias-servicio', options),
+    obtenerPromociones: (options) => consultar('/api/promociones', options),
     obtenerServicios: (options) => consultar('/api/servicios', options),
     obtenerCategoriasProducto: (options) => consultar('/api/categorias-producto', options),
     obtenerProductos: (filtros = {}, options) => {
@@ -61,7 +62,7 @@ export function createPublicApi(baseUrl, fetchImpl = globalThis.fetch) {
 }
 
 export const {
-  obtenerCategoriasServicio, obtenerServicios, obtenerCategoriasProducto,
+  obtenerCategoriasServicio, obtenerServicios, obtenerPromociones, obtenerCategoriasProducto,
   obtenerProductos, obtenerProductoPorId, obtenerProductoPorSlug,
 } = createPublicApi(API_URL)
 

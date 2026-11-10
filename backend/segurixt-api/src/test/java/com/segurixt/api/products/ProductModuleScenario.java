@@ -210,4 +210,109 @@ abstract class ProductModuleScenario {
         mvc.perform(post("/api/admin/productos/"+id+"/imagenes").header("Authorization","Bearer "+token).contentType("application/json").content(imageBody("grande.png",tooBig))).andExpect(status().isBadRequest());
         assertEquals(0,jdbc.queryForObject("SELECT COUNT(*) FROM imagenes_producto WHERE producto_id=?",Integer.class,id));
     }
+
+    @Test void categoriaEditaEstadoYOrdenSinEliminarProductos() throws Exception {
+        long id=create();
+        String body=categoryBody().replace("}",",\"orden\":3,\"activo\":false}");
+        mvc.perform(put("/api/admin/productos/categorias/"+categoryId).header("Authorization","Bearer "+editorToken)
+            .contentType("application/json").content(body)).andExpect(status().isForbidden());
+        mvc.perform(put("/api/admin/productos/categorias/"+categoryId).header("Authorization","Bearer "+token)
+            .contentType("application/json").content(body)).andExpect(status().isOk()).andExpect(jsonPath("$.orden").value(3));
+        em.clear();
+        assertEquals(1,jdbc.queryForObject("SELECT COUNT(*) FROM productos WHERE id=?",Integer.class,id));
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isNotFound());
+        mvc.perform(put("/api/admin/productos/categorias/"+categoryId).header("Authorization","Bearer "+token)
+            .contentType("application/json").content(body.replace("false","true"))).andExpect(status().isOk());
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isOk());
+    }
+
+    @Test void precioSePersisteYSeOcultaSinPerderImporte() throws Exception {
+        long id=create();
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.precio").value(123.45)).andExpect(jsonPath("$.mostrarPrecio").value(true));
+        mvc.perform(put("/api/admin/productos/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+            .content(body("Precio privado",true).replace("\"mostrarPrecio\":true","\"mostrarPrecio\":false"))).andExpect(status().isOk());
+        em.clear();
+        assertEquals(0,new java.math.BigDecimal("123.45").compareTo(jdbc.queryForObject("SELECT precio FROM productos WHERE id=?",java.math.BigDecimal.class,id)));
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.precio").isEmpty()).andExpect(jsonPath("$.mostrarPrecio").value(false));
+        assertFalse(jdbc.queryForObject("SELECT mostrar_precio FROM productos WHERE id=?",Boolean.class,id));
+        mvc.perform(get("/api/admin/productos/"+id).header("Authorization","Bearer "+token))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.precio").value(123.45)).andExpect(jsonPath("$.mostrarPrecio").value(false));
+        mvc.perform(put("/api/admin/productos/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+            .content(body("Precio publicado",true))).andExpect(status().isOk()).andExpect(jsonPath("$.mostrarPrecio").value(true));
+        em.clear();
+        assertTrue(jdbc.queryForObject("SELECT mostrar_precio FROM productos WHERE id=?",Boolean.class,id));
+        assertEquals(0,new java.math.BigDecimal("123.45").compareTo(jdbc.queryForObject("SELECT precio FROM productos WHERE id=?",java.math.BigDecimal.class,id)));
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isOk()).andExpect(jsonPath("$.precio").value(123.45));
+        mvc.perform(get("/api/productos").param("q","Precio publicado")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.content[0].precio").value(123.45));
+        mvc.perform(put("/api/admin/productos/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+            .content(body("Precio nulo",true).replace("123.45","null").replace("\"mostrarPrecio\":true","\"mostrarPrecio\":false"))).andExpect(status().isOk());
+        mvc.perform(get("/api/productos/"+id)).andExpect(status().isOk()).andExpect(jsonPath("$.precio").isEmpty());
+    }
+
+    @Test void precioVisibleRechazaCeroONuloSinSobrescribirRegistro() throws Exception {
+        long id=create();
+        for (String price:List.of("0","null")) {
+            mvc.perform(put("/api/admin/productos/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+                .content(body("Precio inválido",true).replace("123.45",price))).andExpect(status().isBadRequest());
+        }
+        mvc.perform(get("/api/admin/productos/"+id).header("Authorization","Bearer "+token)).andExpect(status().isOk())
+            .andExpect(jsonPath("$.precio").value(123.45)).andExpect(jsonPath("$.mostrarPrecio").value(true));
+    }
+
+    @Test void serviciosPersistenOrdenCategoriaYPermisos() throws Exception {
+        String slug="cat-"+UUID.randomUUID();
+        jdbc.update("INSERT INTO categorias_servicio(nombre,slug,activo,orden) VALUES (?,?,true,0)","Categoría prueba",slug);
+        long cat=jdbc.queryForObject("SELECT id FROM categorias_servicio WHERE slug=?",Long.class,slug);
+        String body="""
+            {"nombre":"Servicio prueba","slug":"%s","categoriaId":%d,"orden":4,
+            "descripcionCorta":"Resumen","descripcion":"Detalle","imagenUrl":"",
+            "destacado":false,"activo":true}
+            """.formatted("srv-"+UUID.randomUUID(),cat);
+        for(String auth:List.of("","Bearer "+lectorToken))
+            mvc.perform(post("/api/admin/servicios").header("Authorization",auth).contentType("application/json").content(body))
+                .andExpect(status().is(auth.isEmpty()?401:403));
+        var result=mvc.perform(post("/api/admin/servicios").header("Authorization","Bearer "+editorToken).contentType("application/json").content(body))
+            .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+        long id=((Number)JsonPath.read(result,"$.id")).longValue();
+        em.clear();
+        assertEquals(4,jdbc.queryForObject("SELECT orden FROM servicios WHERE id=?",Integer.class,id));
+        mvc.perform(post("/api/admin/servicios").header("Authorization","Bearer "+token).contentType("application/json").content(body)).andExpect(status().isConflict());
+        mvc.perform(get("/api/servicios")).andExpect(status().isOk())
+            .andExpect(jsonPath("$[?(@.id == "+id+")].nombre").value(org.hamcrest.Matchers.hasItem("Servicio prueba")));
+        String inactive=body.replace("\"activo\":true","\"activo\":false");
+        mvc.perform(put("/api/admin/servicios/"+id).header("Authorization","Bearer "+editorToken).contentType("application/json").content(inactive)).andExpect(status().isForbidden());
+        mvc.perform(put("/api/admin/servicios/"+id).header("Authorization","Bearer "+token).contentType("application/json").content(inactive)).andExpect(status().isOk());
+        mvc.perform(get("/api/servicios")).andExpect(status().isOk()).andExpect(jsonPath("$[?(@.id == "+id+")]").isEmpty());
+        mvc.perform(put("/api/admin/servicios/"+id).header("Authorization","Bearer "+token).contentType("application/json").content(body)).andExpect(status().isOk());
+        mvc.perform(put("/api/admin/servicios/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+            .content(body.replace("\"imagenUrl\":\"\"","\"imagenUrl\":\"javascript:alert(1)\""))).andExpect(status().isBadRequest());
+    }
+
+    @Test void promocionesFiltranVigenciaYValidanFechasYRoles() throws Exception {
+        String body="""
+            {"titulo":"Promoción prueba","descripcion":"Detalle","imagenUrl":"https://example.com/promo.png",
+            "fechaInicio":"2000-01-01","fechaFin":"2999-12-31","activo":true}
+            """;
+        for(String auth:List.of("","Bearer "+lectorToken))
+            mvc.perform(post("/api/admin/promociones").header("Authorization",auth).contentType("application/json").content(body))
+                .andExpect(status().is(auth.isEmpty()?401:403));
+        var result=mvc.perform(post("/api/admin/promociones").header("Authorization","Bearer "+editorToken).contentType("application/json").content(body))
+            .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+        long id=((Number)JsonPath.read(result,"$.id")).longValue();
+        em.clear();
+        assertEquals("Promoción prueba",jdbc.queryForObject("SELECT titulo FROM promociones WHERE id=?",String.class,id));
+        mvc.perform(get("/api/promociones")).andExpect(status().isOk()).andExpect(jsonPath("$[?(@.id == "+id+")]").isNotEmpty());
+        for(String hidden:List.of(body.replace("true","false"),body.replace("2999-12-31","2000-01-02"),body.replace("2000-01-01","2999-12-30"))) {
+            mvc.perform(put("/api/admin/promociones/"+id).header("Authorization","Bearer "+editorToken).contentType("application/json").content(hidden)).andExpect(status().isOk());
+            mvc.perform(get("/api/promociones")).andExpect(status().isOk()).andExpect(jsonPath("$[?(@.id == "+id+")]").isEmpty());
+        }
+        mvc.perform(put("/api/admin/promociones/"+id).header("Authorization","Bearer "+token).contentType("application/json").content(body.replace("2999-12-31","1999-01-01"))).andExpect(status().isBadRequest());
+        String today=java.time.LocalDate.now(java.time.ZoneId.of("America/Mazatlan")).toString();
+        mvc.perform(put("/api/admin/promociones/"+id).header("Authorization","Bearer "+token).contentType("application/json")
+            .content(body.replace("2000-01-01",today).replace("2999-12-31",today))).andExpect(status().isOk());
+        mvc.perform(get("/api/promociones")).andExpect(status().isOk()).andExpect(jsonPath("$[?(@.id == "+id+")]").isNotEmpty());
+    }
 }

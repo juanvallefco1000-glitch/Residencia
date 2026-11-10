@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
 
-@RestControllerAdvice(assignableTypes={AdminProductoController.class,ProductoImagenController.class,UsuarioController.class})
+@RestControllerAdvice(assignableTypes={com.segurixt.api.quotes.QuoteController.class,com.segurixt.api.quotes.AdminQuoteController.class,AdminServicioController.class,AdminPromocionController.class,PromocionController.class,AdminProductoController.class,ProductoImagenController.class,UsuarioController.class})
 public class AdminProductoErrorHandler {
     @ExceptionHandler(ResponseStatusException.class)
     ResponseEntity<Map<String,String>> estado(ResponseStatusException e) {

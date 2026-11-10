@@ -21,6 +21,12 @@ public class AdminProductoController {
     @PostMapping("/categorias") public ResponseEntity<AdminProductoResponse.Categoria> crearCategoria(@Valid @RequestBody CategoriaProductoRequest request) {
         return ResponseEntity.status(201).body(service.crearCategoria(request));
     }
+    @PutMapping("/categorias/{id}")
+    public AdminProductoResponse.Categoria actualizarCategoria(
+        @org.springframework.security.core.annotation.AuthenticationPrincipal com.segurixt.api.auth.AuthService.User actor,
+        @PathVariable long id, @Valid @RequestBody CategoriaProductoUpdateRequest request) {
+        return service.actualizarCategoria(id, request, actor.rol());
+    }
     @GetMapping("/{id}") public AdminProductoResponse porId(@PathVariable long id) { return service.porId(id); }
     @PostMapping public ResponseEntity<AdminProductoResponse> crear(@Valid @RequestBody ProductoRequest request) {
         var p=service.crear(request);

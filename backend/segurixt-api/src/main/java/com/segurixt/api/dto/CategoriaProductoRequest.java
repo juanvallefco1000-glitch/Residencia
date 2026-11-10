@@ -5,5 +5,10 @@ import jakarta.validation.constraints.*;
 public record CategoriaProductoRequest(
     @NotBlank @Size(max=120) String nombre,
     @NotBlank @Size(max=120) @Pattern(regexp="[a-z0-9]+(?:-[a-z0-9]+)*") String slug,
-    @Size(max=500) String descripcion
-) {}
+    @Size(max=500) String descripcion,
+    @Min(0) Integer orden, Boolean activo
+) {
+    public CategoriaProductoRequest(String nombre, String slug, String descripcion) {
+        this(nombre,slug,descripcion,null,null);
+    }
+}

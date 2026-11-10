@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ProductImage from '../ProductImage'
-import { imagePayload, productAdminService, announceProductChange } from '../../services/admin/productAdminService.js'
+import { imagePayload, productAdminService, announceProductChange, validateProductPrice } from '../../services/admin/productAdminService.js'
 
 const empty = { nombre: '', slug: '', categoriaId: '', marca: '', modelo: '', descripcionCorta: '', descripcion: '', precio: '', mostrarPrecio: false, destacado: false, activo: true }
 export const productSlug = name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 200).replace(/^-|-$/g, '')
@@ -13,8 +13,8 @@ export default function AdminProductForm({ product, categories, onSave, onClose,
   async function submit(event) {
     event.preventDefault()
     if (!values.nombre.trim()) return setError('Indica el nombre del producto.')
-    if (values.mostrarPrecio && values.precio === '') return setError('Indica un precio para mostrarlo en el catálogo.')
-    if (values.precio !== '' && (!Number.isFinite(Number(values.precio)) || Number(values.precio) < 0 || Number(values.precio) > 9999999999.99 || !/^\d+(\.\d{1,2})?$/.test(String(values.precio)))) return setError('El precio debe ser positivo o cero y tener como máximo dos decimales.')
+    const priceError = validateProductPrice(values.precio, values.mostrarPrecio)
+    if (priceError) return setError(priceError)
     setBusy(true); setError('')
     try {
       const { nombre, slug, marca, modelo, descripcionCorta, descripcion, mostrarPrecio, destacado, activo } = values
@@ -30,13 +30,14 @@ export default function AdminProductForm({ product, categories, onSave, onClose,
           <label>Nombre *<input autoFocus required maxLength={200} value={values.nombre} onChange={e => change('nombre', e.target.value)} /></label>
           <label>Slug *<input required maxLength={200} pattern="[a-z0-9]+(-[a-z0-9]+)*" title="Letras minúsculas, números y guiones entre palabras" value={values.slug} onChange={e => change('slug', e.target.value)} /></label>
           <label>Categoría *<select required value={values.categoriaId} onChange={e => change('categoriaId', e.target.value)}><option value="">Selecciona una categoría</option>{categories.map(c => <option key={c.id} value={c.id} disabled={!c.activo && String(c.id) !== String(product?.categoria.id)}>{c.nombre}{!c.activo ? ' (inactiva)' : ''}</option>)}</select></label>
-          <label>Precio (MXN)<input type="number" min="0" max="9999999999.99" step="0.01" required={values.mostrarPrecio} value={values.precio} onChange={e => change('precio', e.target.value)} /></label>
+          <label>Precio (MXN)<input type="number" min={values.mostrarPrecio ? "0.01" : "0"} max="9999999999.99" step="0.01" required={values.mostrarPrecio} value={values.precio} onChange={e => change('precio', e.target.value)} /></label>
           <label>Marca<input maxLength={100} value={values.marca || ''} onChange={e => change('marca', e.target.value)} /></label>
           <label>Modelo<input maxLength={100} value={values.modelo || ''} onChange={e => change('modelo', e.target.value)} /></label>
           <label className="adminFullWidth">Descripción corta<textarea rows={2} maxLength={500} value={values.descripcionCorta || ''} onChange={e => change('descripcionCorta', e.target.value)} /></label>
           <label className="adminFullWidth">Descripción<textarea rows={5} maxLength={10000} value={values.descripcion || ''} onChange={e => change('descripcion', e.target.value)} /></label>
         </div>
-        <div className="adminProductChecks">{[['mostrarPrecio', 'Mostrar precio'], ['destacado', 'Destacado'], ...(canManageStatus ? [['activo', 'Activo']] : [])].map(([key, text]) => <label key={key}><input type="checkbox" checked={values[key]} onChange={e => change(key, e.target.checked)} />{text}</label>)}</div>
+        <div className="adminProductChecks">{[['mostrarPrecio', 'Mostrar precio en el catálogo público'], ['destacado', 'Destacado'], ...(canManageStatus ? [['activo', 'Activo']] : [])].map(([key, text]) => <label key={key}><input type="checkbox" checked={values[key]} onChange={e => change(key, e.target.checked)} />{text}</label>)}</div>
+        <p className="adminMuted">{values.mostrarPrecio ? 'El precio se publicará si el producto y su categoría están activos y el importe es mayor que cero.' : 'Precio oculto: los clientes verán «Consultar precio». El importe registrado se conserva para administración.'}</p>
         {error && <p role="alert" className="adminError">{error}</p>}
         <div className="adminActions"><button className="adminButton adminPrimary" disabled={busy}>{busy ? 'Guardando…' : 'Guardar producto'}</button><button type="button" className="adminButton" onClick={onClose}>Cerrar formulario</button></div>
       </fieldset>
